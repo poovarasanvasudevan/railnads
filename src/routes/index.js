@@ -1,6 +1,6 @@
 import React, {Suspense, useContext} from 'react';
 import {
-    Switch,
+    Routes,
 } from "react-router-dom";
 import {LoginRoute, PrivateRoute} from "./extension";
 import {ContextStore} from "../core/context";
@@ -13,13 +13,8 @@ const AccountSettings = React.lazy(() => import('../pages/account-settings'));
 export const routes = [
     {
         type: PrivateRoute,
-        path: "/dashboard",
+        path: "/home/*",
         component: Dashboard,
-    },
-    {
-        type: PrivateRoute,
-        path: "/application-settings",
-        component: AccountSettings
     },
     {
         type: LoginRoute,
@@ -48,13 +43,11 @@ export default function AppRoutes(props) {
 
     return (
         <Suspense fallback={<p>Loading</p>}>
-            <Switch>
+            <Routes>
                 {routes.map((route, i) => (
-                   <route.type path={route.path}>
-                       <route.component />
-                   </route.type>
+                   <route.type path={route.path} child={ <route.component />} />
                 ))}
-            </Switch>
+            </Routes>
         </Suspense>
     )
 }
