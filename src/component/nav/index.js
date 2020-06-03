@@ -13,7 +13,7 @@ import TextField from '@atlaskit/textfield';
 const customMode = modeGenerator({
     product: {
         text: colors.N0,
-        background: '#00548B',
+        background: '#0068FF',
     },
 });
 
@@ -67,6 +67,7 @@ export default function AppNavigation(props) {
     const currentUser = Parse.User.current()
     const [logo,setLogo] = React.useState('')
 
+
     React.useEffect(()=>{
         Parse.Config.get()
             .then((config) => {
@@ -103,7 +104,7 @@ export default function AppNavigation(props) {
                             icon: () => <img src={logo} alt={"logo"} />,
                             id: 'logo',
                             tooltip: 'Atlassian',
-                            href: "/dashboard"
+                            href: "/"
                         },
                         {
                             icon: FiHome,
@@ -155,7 +156,7 @@ export default function AppNavigation(props) {
                                 return (
                                     <DropdownItemGroup>
                                         <DropdownItem>
-                                            <Link to={"/application-settings"}> Application Settings</Link>
+                                            <Link to={"/home/application-settings"}> Application Settings</Link>
                                         </DropdownItem>
                                         <DropdownItem>Profile Settings</DropdownItem>
                                         <DropdownItem onClick={logout}>Logout</DropdownItem>
