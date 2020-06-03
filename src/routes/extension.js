@@ -1,52 +1,25 @@
 import React, {useContext} from 'react';
 import {
     Route,
-    Redirect
+    Navigate
 } from "react-router-dom";
 
 import {ContextStore} from "../core/context";
 
-export function LoginRoute({children, ...rest}) {
+export function LoginRoute({path, child}) {
 
     const {Parse} = useContext(ContextStore)
 
     return (
-        <Route
-            {...rest}
-            render={({location}) =>
-                Parse.User.current() ? (
-                    <Redirect
-                        to={{
-                            pathname: "/dashboard",
-                            state: {from: location}
-                        }}
-                    />
-                ) : (children)
-            }
-        />
+        Parse.User.current() ? <Navigate to={"/home"}/> : <Route path={path} element={child}/>
     );
 }
 
-export function PrivateRoute({children, ...rest}) {
+export function PrivateRoute({path, child}) {
 
     const {Parse} = useContext(ContextStore)
 
     return (
-        <Route
-            {...rest}
-            render={({location}) =>
-                Parse.User.current() ? (
-                    children
-                ) : (
-                    <Redirect
-                        to={{
-                            pathname: "/",
-                            state: {from: location}
-                        }}
-                    />
-                )
-
-            }
-        />
+        Parse.User.current() ? <Route path={path} element={child}/> : <Navigate to={"/"}/>
     );
 }
