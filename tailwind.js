@@ -20,6 +20,7 @@ module.exports = {
 
 
       product: '#00548B',
+      product2: '#0068FF',
       corror:'#2D4B5F',
       hovercolor: '#eaeaea',
 
