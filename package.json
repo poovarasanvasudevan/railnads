@@ -3,18 +3,42 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@atlaskit/avatar": "^17.1.11",
+    "@atlaskit/button": "^13.4.0",
+    "@atlaskit/drawer": "^5.3.8",
+    "@atlaskit/dropdown-menu": "^9.0.4",
+    "@atlaskit/form": "^7.3.0",
+    "@atlaskit/global-navigation": "^9.0.2",
+    "@atlaskit/modal-dialog": "^10.5.9",
+    "@atlaskit/navigation-next": "^8.0.5",
+    "@atlaskit/page": "^11.0.13",
+    "@atlaskit/page-header": "^9.0.19",
+    "@atlaskit/select": "^11.0.11",
+    "@atlaskit/textfield": "^3.1.11",
+    "@atlaskit/theme": "^9.5.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "overmind": "^23.1.0",
+    "overmind-react": "^24.1.0",
+    "parse": "^2.13.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-icons": "^3.10.0",
+    "react-resource-router": "^0.11.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "recoil": "^0.0.8",
+    "styled-components": "3.2.6"
   },
   "scripts": {
+    "prestart": "postcss src/assets/tailwind.css -o src/assets/main.css",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:css": "postcss src/assets/tailwind.css -o src/assets/main.css",
+    "watch:css": "postcss src/assets/tailwind.css -o src/assets/main.css"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -30,5 +54,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.8.0",
+    "postcss-cli": "^7.1.1",
+    "tailwindcss": "^1.4.6"
   }
 }
