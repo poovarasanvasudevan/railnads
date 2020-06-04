@@ -11,10 +11,12 @@ import Form, {
     HelperMessage,
 } from '@atlaskit/form';
 import {Action, ContextStore} from "../../core/context";
+import {useNavigate} from "react-router-dom";
 
 export default function Login(props) {
 
     const {dispatch} = React.useContext(ContextStore)
+    const navigate = useNavigate()
 
     const onSubmit = (data) => {
         dispatch({
@@ -23,7 +25,7 @@ export default function Login(props) {
             password: data.password,
             callback: (user, error) => {
                 if (error == null) {
-                    props.history.push("/home")
+                    navigate("/home")
                 }
             }
         })
