@@ -5,10 +5,11 @@ import {FiHome, FiSearch, FiSettings, FiHelpCircle, FiGrid, FiUserPlus, FiBell} 
 import Avatar from "@atlaskit/avatar";
 import {colors} from '@atlaskit/theme';
 import {DropdownItemGroup, DropdownItem, DropdownMenuStateless} from "@atlaskit/dropdown-menu";
-import {Link, useHistory} from "react-router-dom";
+import {Link, useHistory, useNavigate} from "react-router-dom";
 import {Action, ContextStore} from "../../core/context";
 import Drawer from '@atlaskit/drawer';
 import TextField from '@atlaskit/textfield';
+import {PersonResult, ResultItemGroup} from '@atlaskit/quick-search';
 
 const customMode = modeGenerator({
     product: {
@@ -63,25 +64,25 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
 };
 
 export default function AppNavigation(props) {
-    const {Parse,sidebar, dispatch,config} = React.useContext(ContextStore)
+    const {Parse, sidebar, dispatch} = React.useContext(ContextStore)
     const currentUser = Parse.User.current()
-    const [logo,setLogo] = React.useState('')
+    const [logo, setLogo] = React.useState('')
+    const navigate = useNavigate()
 
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         Parse.Config.get()
             .then((config) => {
                 setLogo(config.get("logo").url())
             })
-    },[])
+    }, [])
 
     const logout = (e) => {
-        console.log(e)
         dispatch({
             type: Action.LOGOUT,
             callback: (err) => {
                 if (err == null) {
-                    window.location.href = "/"
+                    navigate("/")
                 }
             }
         })
@@ -89,7 +90,11 @@ export default function AppNavigation(props) {
 
     const closeSwitcherDrawer = useCallback(() => {
         dispatch({type: Action.SIDEBAR, open: false})
-    },[])
+    }, [])
+
+    const defaultProps = {
+        resultId: 'result_id',
+    };
 
     return (
         <>
@@ -101,16 +106,16 @@ export default function AppNavigation(props) {
                     itemComponent={ItemComponent}
                     primaryItems={[
                         {
-                            icon: () => <img src={logo} alt={"logo"} />,
+                            icon: () => <img src={logo} alt={"logo"}/>,
                             id: 'logo',
                             tooltip: 'Atlassian',
-                            href: "/"
+                            onClick: () => navigate("/"),
                         },
                         {
                             icon: FiHome,
                             id: 'star',
                             tooltip: 'Starred and recent',
-                            onClick: () => console.log('Search item clicked'),
+                            onClick: () => navigate("/home"),
                         },
                         {
                             icon: FiSearch,
@@ -184,20 +189,37 @@ export default function AppNavigation(props) {
                     <div>
                         <h1>Help</h1>
                         <div className="flex flex-row pr-10">
-                            <TextField placeholder={'Search for help...'} />
+                            <TextField placeholder={'Search for help...'}/>
                         </div>
                     </div>
                 )}
 
                 {sidebar.context === "USERS" && (
-                    <h1>Users</h1>
+                    <div>
+                        <div className="flex flex-col pr-10">
+                            <TextField placeholder={'Search ...'}/>
+                            <div className="mx-2">
+                            <ResultItemGroup title="People examples">
+                                <PersonResult
+                                    {...defaultProps}
+                                    key="4"
+                                    mentionName="TheAvatarGod"
+                                    mentionPrefix="#"
+                                    name="David Soundararaj"
+                                    presenceMessage="@dteen"
+                                    presenceState="online"
+                                />
+                            </ResultItemGroup>
+                            </div>
+                        </div>
+                    </div>
                 )}
 
 
                 {sidebar.context === "SEARCH" && (
                     <div>
                         <div className="flex flex-row pr-10">
-                            <TextField placeholder={'Search ...'} />
+                            <TextField placeholder={'Search ...'}/>
                         </div>
                     </div>
                 )}
