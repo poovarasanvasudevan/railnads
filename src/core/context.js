@@ -38,7 +38,7 @@ const StateProvider = (props) => {
             }
 
             case Action.LOGOUT: {
-                Parse.User.logout()
+                Parse.User.logOut()
                     .then(() => action.callback())
                     .catch((error) => action.callback(error))
 
