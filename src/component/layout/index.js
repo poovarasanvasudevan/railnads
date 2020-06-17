@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {memo} from 'react'
 import AppNavigation from "../nav";
 import {LayoutManager, NavigationProvider} from "@atlaskit/navigation-next";
 
-export default function Layout(props) {
+const Layout = memo((props) => {
 
 
     React.useEffect(() => {
@@ -28,4 +28,6 @@ export default function Layout(props) {
             </LayoutManager>
         </NavigationProvider>
     )
-}
+})
+
+export default Layout;

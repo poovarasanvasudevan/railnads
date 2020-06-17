@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {memo} from 'react';
 
-export default function AccountSettings(props) {
+const  AccountSettings = memo((props) => {
     return (
 
         <div className="p-2">
@@ -9,4 +9,6 @@ export default function AccountSettings(props) {
             </div>
         </div>
     )
-}
+})
+
+export default AccountSettings

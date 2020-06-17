@@ -3,7 +3,7 @@ import {ContainerHeader, ItemAvatar, Switcher} from "@atlaskit/navigation-next";
 import {FiChevronDown} from 'react-icons/fi'
 
 
-export default class MySwitcher extends React.Component {
+export default class MySwitcher extends React.PureComponent {
     state = { selected: this.props.projects[0].options[0] };
 
     create = () => ({

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {memo} from 'react';
 
-export default function IconButton(props) {
+const IconButton = memo((props) => {
 
     return (
         <button className="px-1 py-1 rounded-md mx-2
@@ -9,4 +9,7 @@ export default function IconButton(props) {
             {props.children}
         </button>
     )
-}
+})
+
+
+export default IconButton;

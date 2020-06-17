@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import Layout from "../../component/layout";
 import {
     Routes,
     Route,
 } from 'react-router-dom';
-import Home from "../home";
-import AccountSettings from "../account-settings";
 
+const Home = React.lazy(() => import ("../home"))
+const AccountSettings = React.lazy(() => import ("../account-settings"))
+const Notification = React.lazy(() => import ("../notification"))
 
 export default function Dashboard(props) {
 
@@ -18,11 +19,13 @@ export default function Dashboard(props) {
 
     return (
         <Layout>
-            <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/application-settings" element={<AccountSettings/>}/>
-            </Routes>
-
+            <Suspense fallback={<p>Loading...</p>}>
+                <Routes>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/application-settings" element={<AccountSettings/>}/>
+                    <Route path="/notification" element={<Notification/>}/>
+                </Routes>
+            </Suspense>
         </Layout>
     )
 }

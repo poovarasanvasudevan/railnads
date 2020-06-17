@@ -1,14 +1,15 @@
-import React from 'react';
-import MySwitcher from "../../component/switcher";
+import React, {memo} from 'react';
 import {GroupHeading} from "@atlaskit/navigation-next";
 import SquareIcon from "../../component/icon/bg-square";
-import {FaUsers} from "react-icons/fa";
 import IconButton from "../../component/button/icon-button";
-import {FiInfo, FiPhoneCall, FiVideo} from "react-icons/fi";
+import {FiInfo, FiPhoneCall, FiVideo, FiUser} from "react-icons/fi";
 import {TiAttachmentOutline, TiCalendarOutline, TiMicrophoneOutline, TiPinOutline, TiUser} from "react-icons/ti";
 import Textfield from "@atlaskit/textfield";
+import Logo from '../../assets/images/iam_suite.png'
+import {TextMessage} from "../../component/message";
+import {ContextStore} from "../../core/context";
 
-export default function Home(props) {
+const Home = memo((props) => {
     const projects = [
         {
             label: 'Recent Projects',
@@ -63,26 +64,40 @@ export default function Home(props) {
             ],
         },
     ];
+
+    const {Parse} = React.useContext(ContextStore)
+    const [messages, setMessages] = React.useState([])
+    React.useEffect(() => {
+        const ChatMessages = Parse.Object.extend("ChatMessages");
+        const query = new Parse.Query(ChatMessages);
+        query.equalTo("is_sub_message", false)
+        // query.exists("reply_message")
+        query.include("from")
+        query.include("to")
+        query.include("reply_message")
+
+        query.limit(30)
+        
+        query.find()
+            .then((data) => {
+                console.log(data)
+                setMessages(data)
+            })
+            .catch((e) => console.log(e))
+    }, [])
+
     return (
         <div className="flex flex-row h-full">
-            <div style={{width: "300px", background: '#F8F9FB'}}
+            <div style={{width: "300px"}}
                  className=" h-full border-r border-gray-200 sm:appearance-none md:block">
-                <div>
-
-                    <div
-                        data-webdriver-test-key="container-header"
-                        className="p-2"
-                    >
-                        <MySwitcher projects={projects}/>
-                    </div>
-
+                <div className="flex content-center items-center">
+                    {/*<img src={Logo} width={170}/>*/}
                 </div>
-
                 <div>
 
                     <div className="px-3 pt-4">
                         <input
-                            className="px-2 border-hovercolor border focus:border-hovercolor rounded-md"
+                            className="px-2 border-hovercolor border focus:border-hovercolor rounded-md bg-gray-200"
                             type="text"
                             style={{height: 35, width: '100%'}}
                             placeholder="Search People"/>
@@ -95,14 +110,14 @@ export default function Home(props) {
                         </GroupHeading>
 
                         <div
-                            className="px-4 py-1 mx-2 rounded-md flex flex-row content-center items-center hover:bg-hovercolor cursor-pointer">
-                            <SquareIcon icon={FaUsers} className=""/>
+                            className="px-2 py-1 mx-2 rounded-md flex flex-row content-center items-center hover:bg-hovercolor cursor-pointer">
+                            <SquareIcon icon={FiUser} className=""/>
                             <h2 className="ml-3 hover:text-gray-900 font-medium text-gray-600"
                                 style={{fontSize: '14px'}}> Barn Users </h2>
                         </div>
                         <div
-                            className="px-4 py-1 mx-2 rounded-md flex flex-row content-center items-center hover:bg-hovercolor cursor-pointer">
-                            <SquareIcon icon={FaUsers} className=""/>
+                            className="px-2 py-1 mx-2 rounded-md flex flex-row content-center items-center hover:bg-hovercolor cursor-pointer">
+                            <SquareIcon icon={FiUser} className=""/>
                             <h2 className="ml-3 hover:text-gray-900 font-medium text-gray-600"
                                 style={{fontSize: '14px'}}> Barn Users </h2>
                         </div>
@@ -114,8 +129,8 @@ export default function Home(props) {
                         </GroupHeading>
 
                         <div
-                            className="px-4 py-2 mx-2 my-1 rounded-md flex flex-row content-center items-center hover:bg-hovercolor cursor-pointer">
-                            <SquareIcon icon={FaUsers} className=""/>
+                            className="px-2 py-2 mx-2 my-1 rounded-md flex flex-row content-center items-center hover:bg-hovercolor cursor-pointer">
+                            <SquareIcon icon={FiUser} className=""/>
                             <h2 className="ml-3 hover:text-gray-900 font-medium text-gray-600"
                                 style={{fontSize: '14px'}}> Barn Users </h2>
                         </div>
@@ -128,8 +143,8 @@ export default function Home(props) {
                         </GroupHeading>
 
                         <div
-                            className="px-4 py-2 mx-2 my-1 rounded-md flex flex-row content-center items-center hover:bg-hovercolor cursor-pointer">
-                            <SquareIcon icon={FaUsers} className=""/>
+                            className="px-2 py-2 mx-2 my-1 rounded-md flex flex-row content-center items-center hover:bg-hovercolor cursor-pointer">
+                            <SquareIcon icon={FiUser} className=""/>
                             <h2 className="ml-3 hover:text-gray-900 font-medium text-gray-600"
                                 style={{fontSize: '14px'}}> Barn Users </h2>
                         </div>
@@ -139,11 +154,11 @@ export default function Home(props) {
             </div>
 
             <div className="flex flex-col flex-1">
-                <div className="flex bg-white shadow-sm px-4 py-3">
+                <div className="flex bg-white shadow-sm px-2 py-3">
                     <div className="flex-1">
                         <div className="flex flex-row">
                             <SquareIcon
-                                icon={FaUsers}
+                                icon={FiUser}
                                 size={22}
                                 paddingclass={'p-2'}
                                 bgcolorclass={'bg-red-500'}
@@ -171,7 +186,12 @@ export default function Home(props) {
 
                     <div className="flex flex-1 flex-col">
 
-                        <div className="flex-1">
+                        <div className="flex-1 flex flex-col-reverse">
+
+                            {messages && messages.map((message) => (
+                                <TextMessage key={message.id} message={message}/>
+                            ))}
+
 
                         </div>
 
@@ -214,4 +234,6 @@ export default function Home(props) {
 
         </div>
     )
-}
+})
+
+export default Home

@@ -1,11 +1,10 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, memo} from 'react'
 import {GlobalItem, GlobalNav, modeGenerator, ThemeProvider} from "@atlaskit/navigation-next";
-import {FaStar} from 'react-icons/fa'
 import {FiHome, FiSearch, FiSettings, FiHelpCircle, FiGrid, FiUserPlus, FiBell} from 'react-icons/fi'
 import Avatar from "@atlaskit/avatar";
 import {colors} from '@atlaskit/theme';
 import {DropdownItemGroup, DropdownItem, DropdownMenuStateless} from "@atlaskit/dropdown-menu";
-import {Link, useHistory, useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Action, ContextStore} from "../../core/context";
 import Drawer from '@atlaskit/drawer';
 import TextField from '@atlaskit/textfield';
@@ -63,7 +62,7 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
     return <GlobalItem {...itemProps} />;
 };
 
-export default function AppNavigation(props) {
+const AppNavigation = memo((props) => {
     const {Parse, sidebar, dispatch} = React.useContext(ContextStore)
     const currentUser = Parse.User.current()
     const [logo, setLogo] = React.useState('')
@@ -140,7 +139,7 @@ export default function AppNavigation(props) {
                             icon: FiBell,
                             id: 'Notification',
                             tooltip: 'Notification',
-                            onClick: () => console.log('Create item clicked'),
+                            onClick: () => navigate("/home/notification"),
                         },
                     ]}
                     secondaryItems={[
@@ -199,17 +198,15 @@ export default function AppNavigation(props) {
                         <div className="flex flex-col pr-10">
                             <TextField placeholder={'Search ...'}/>
                             <div className="mx-2">
-                            <ResultItemGroup title="People examples">
-                                <PersonResult
-                                    {...defaultProps}
-                                    key="4"
-                                    mentionName="TheAvatarGod"
-                                    mentionPrefix="#"
-                                    name="David Soundararaj"
-                                    presenceMessage="@dteen"
-                                    presenceState="online"
-                                />
-                            </ResultItemGroup>
+                                <ResultItemGroup title="Recent">
+                                    <PersonResult
+                                        {...defaultProps}
+                                        key="4"
+
+                                        name="David Soundararaj"
+                                        presenceState="online"
+                                    />
+                                </ResultItemGroup>
                             </div>
                         </div>
                     </div>
@@ -227,4 +224,6 @@ export default function AppNavigation(props) {
             </Drawer>
         </>
     )
-}
+})
+
+export default AppNavigation

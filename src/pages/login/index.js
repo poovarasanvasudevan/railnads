@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import LoginBG from '../../assets/images/bridge.jpg'
+import LoginBG from '../../assets/images/nbg.png'
 import Logo from '../../assets/images/logo.png'
 import Button from '@atlaskit/button';
 import TextField from '@atlaskit/textfield';
@@ -16,7 +16,6 @@ import {useNavigate} from "react-router-dom";
 export default function Login(props) {
 
     const {dispatch} = React.useContext(ContextStore)
-    const navigate = useNavigate()
 
     const onSubmit = (data) => {
         dispatch({
@@ -25,16 +24,16 @@ export default function Login(props) {
             password: data.password,
             callback: (user, error) => {
                 if (error == null) {
-                    navigate("/home")
+                    window.location.href = "/home"
                 }
             }
         })
     }
 
     return (
-        <div className="flex h-screen flex-row">
+        <div className="flex h-screen flex-row" >
 
-            <div className="w-4/6  h-full" style={{background: `url(${LoginBG}) no-repeat`}}>
+            <div className="w-4/6  h-full" style={{background: `url(${LoginBG}) no-repeat` , backgroundSize:"auto 400px",backgroundPosition:"center center"}}>
 
             </div>
             <div className="w-2/6">
