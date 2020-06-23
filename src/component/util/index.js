@@ -45,3 +45,8 @@ export function randomFlatColors() {
 
     return colors[randomNumber(0, colors.length - 1)]
 }
+
+
+export function createPointerWithObjectId(className:string , objectId: string) {
+    return  { "__type": "Pointer", "className": className, "objectId": objectId}
+}

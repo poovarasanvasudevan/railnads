@@ -12,7 +12,9 @@ const Sidebar = {
 const Action = {
     LOGIN: "login",
     LOGOUT: "logout",
-    SIDEBAR: "sidebar"
+    SIDEBAR: "sidebar",
+    SELECT_USER: "selectUser",
+    SEND_MESSAGE: "send-message"
 };
 
 
@@ -21,7 +23,8 @@ const initialState = {
     sidebar: {
         open: false,
         context: Sidebar.HELP
-    }
+    },
+    selectedUser: undefined
 };
 
 const ContextStore = createContext(initialState);
@@ -35,6 +38,21 @@ const StateProvider = (props) => {
                     .then((user) => action.callback(user, null))
                     .catch((error) => action.callback(null, error))
                 return state
+            }
+
+            case Action.SELECT_USER : {
+
+                const currentUser = Parse.User.current();
+                const currentUserSetting = currentUser.get("settings")
+                currentUser.set("settings", {...currentUserSetting, lastUser: action.user.id})
+                currentUser.save()
+                    .then((data) => console.log("Saved"))
+                    .catch((e) => console.log(e))
+
+                return {
+                    ...state,
+                    selectedUser: action.user
+                }
             }
 
             case Action.LOGOUT: {
@@ -55,6 +73,12 @@ const StateProvider = (props) => {
                 }
 
             }
+
+            case Action.SEND_MESSAGE: {
+
+                return state
+            }
+
 
             default:
                 throw new Error();

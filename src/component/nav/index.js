@@ -13,33 +13,26 @@ import {PersonResult, ResultItemGroup} from '@atlaskit/quick-search';
 const customMode = modeGenerator({
     product: {
         text: colors.N0,
-        background: '#0068FF',
+        background: '#00548B',
     },
 });
 
-class GlobalItemWithDropdown extends React.Component {
-    state = {
-        isOpen: false,
-    };
 
-    handleOpenChange = ({isOpen}) => this.setState({isOpen});
-
-    render() {
-        const {items, trigger: Trigger} = this.props;
-        const {isOpen} = this.state;
-        return (
-            <DropdownMenuStateless
-                boundariesElement="window"
-                isOpen={isOpen}
-                onOpenChange={this.handleOpenChange}
-                position="right bottom"
-                trigger={<Trigger isOpen={isOpen}/>}
-            >
-                {items}
-            </DropdownMenuStateless>
-        );
-    }
-}
+const GlobalItemWithDropdown = memo(({items, trigger: Trigger}) => {
+    const [isOpen, setOpen] = React.useState(false)
+    const handleOpenChange = ({isOpen}) => setOpen(isOpen)
+    return (
+        <DropdownMenuStateless
+            boundariesElement="window"
+            isOpen={isOpen}
+            onOpenChange={handleOpenChange}
+            position="right bottom"
+            trigger={<Trigger isOpen={isOpen}/>}
+        >
+            {items}
+        </DropdownMenuStateless>
+    )
+})
 
 const StatusBaloon = (props) => (
     <div style={{height: 10, width: 10, borderRadius: 5, background: props.color}}>
@@ -48,7 +41,7 @@ const StatusBaloon = (props) => (
 )
 
 
-const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
+const ItemComponent = memo(({dropdownItems: DropdownItems, ...itemProps}) => {
     if (DropdownItems) {
         return (
             <GlobalItemWithDropdown
@@ -60,7 +53,7 @@ const ItemComponent = ({dropdownItems: DropdownItems, ...itemProps}) => {
         );
     }
     return <GlobalItem {...itemProps} />;
-};
+});
 
 const AppNavigation = memo((props) => {
     const {Parse, sidebar, dispatch} = React.useContext(ContextStore)
@@ -76,7 +69,7 @@ const AppNavigation = memo((props) => {
             })
     }, [])
 
-    const logout = (e) => {
+    const logout = useCallback((e) => {
         dispatch({
             type: Action.LOGOUT,
             callback: (err) => {
@@ -85,7 +78,7 @@ const AppNavigation = memo((props) => {
                 }
             }
         })
-    }
+    }, [])
 
     const closeSwitcherDrawer = useCallback(() => {
         dispatch({type: Action.SIDEBAR, open: false})
@@ -107,13 +100,13 @@ const AppNavigation = memo((props) => {
                         {
                             icon: () => <img src={logo} alt={"logo"}/>,
                             id: 'logo',
-                            tooltip: 'Atlassian',
+                            tooltip: 'Collab',
                             onClick: () => navigate("/"),
                         },
                         {
                             icon: FiHome,
                             id: 'star',
-                            tooltip: 'Starred and recent',
+                            tooltip: 'Home',
                             onClick: () => navigate("/home"),
                         },
                         {
@@ -126,7 +119,6 @@ const AppNavigation = memo((props) => {
                             icon: FiUserPlus,
                             id: 'create',
                             tooltip: 'Create',
-
                             onClick: () => dispatch({type: Action.SIDEBAR, open: true, context: "USERS"}),
                         },
                         {
@@ -147,7 +139,7 @@ const AppNavigation = memo((props) => {
                             icon: FiSettings,
                             id: 'settings',
                             onClick: () => console.log('Help item clicked'),
-                            tooltip: 'Help',
+                            tooltip: 'Settings',
                         },
                         {
                             icon: FiHelpCircle,

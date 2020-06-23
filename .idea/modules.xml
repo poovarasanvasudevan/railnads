@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/railnads.iml" filepath="$PROJECT_DIR$/.idea/railnads.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../railnads-server/.idea/railnads-server.iml" filepath="$PROJECT_DIR$/../railnads-server/.idea/railnads-server.iml" />
     </modules>
   </component>
 </project>
