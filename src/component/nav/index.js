@@ -154,7 +154,9 @@ const AppNavigation = memo((props) => {
                                         <DropdownItem>
                                             <Link to={"/home/application-settings"}> Application Settings</Link>
                                         </DropdownItem>
-                                        <DropdownItem>Profile Settings</DropdownItem>
+                                        <DropdownItem>
+                                            <Link to={"/home/profile-settings"}> Profile Settings</Link>
+                                            </DropdownItem>
                                         <DropdownItem onClick={logout}>Logout</DropdownItem>
                                     </DropdownItemGroup>
                                 )

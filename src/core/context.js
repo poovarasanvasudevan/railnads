@@ -1,5 +1,6 @@
 import React, {createContext, useReducer} from 'react';
 import Parse from 'parse';
+import {createPointerWithObjectId} from "../component/util";
 
 
 Parse.initialize("myAppId", "jskey");
@@ -14,7 +15,9 @@ const Action = {
     LOGOUT: "logout",
     SIDEBAR: "sidebar",
     SELECT_USER: "selectUser",
-    SEND_MESSAGE: "send-message"
+    SEND_MESSAGE: "send-message",
+    SET_MESSAGES: "set-message",
+    SET_USERS: "setusers"
 };
 
 
@@ -24,13 +27,15 @@ const initialState = {
         open: false,
         context: Sidebar.HELP
     },
-    selectedUser: undefined
+    selectedUser: undefined,
+    messages: [],
+    users: []
 };
 
 const ContextStore = createContext(initialState);
 
 
-const StateProvider = (props) => {
+const StateProvider = React.memo((props) => {
     const [state, dispatch] = useReducer((state, action) => {
         switch (action.type) {
             case Action.LOGIN : {
@@ -62,6 +67,13 @@ const StateProvider = (props) => {
 
                 return state
             }
+            case Action.SET_MESSAGES: {
+                return {...state, messages: action.payload}
+            }
+
+            case Action.SET_USERS: {
+                return {...state , users: action.payload}
+            }
 
             case Action.SIDEBAR : {
                 return {
@@ -74,8 +86,22 @@ const StateProvider = (props) => {
 
             }
 
-            case Action.SEND_MESSAGE: {
+            case Action.FETCH_MESSAGES : {
 
+                return state
+            }
+
+            case Action.SEND_MESSAGE: {
+                // const ChatMessage = Parse.Object.extend("ChatMessages");
+                // const sendMessage = new ChatMessage()
+                // sendMessage.set("text_message", action.payload.docs)
+                // sendMessage.set("to", createPointerWithObjectId("_User", state.selectedUser.data.id))
+                // sendMessage.set("from", Parse.User.current())
+                //
+                // console.log("Message Saved")
+                // sendMessage.save()
+                //     .then((data) => console.log(data))
+                //     .catch((e) => console.log(e))
                 return state
             }
 
@@ -91,6 +117,6 @@ const StateProvider = (props) => {
             {props.children}
         </ContextStore.Provider>
     );
-};
+});
 
 export {ContextStore, StateProvider, Action}

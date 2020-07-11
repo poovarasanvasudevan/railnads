@@ -52,7 +52,7 @@ body, html, #root {
 }
 .scroll::-webkit-scrollbar-thumb {
     background-color: #ccc;    /* color of the scroll thumb */
-    border-radius: 5px;       /* roundness of the scroll thumb */
+    border-radius: 2px;       /* roundness of the scroll thumb */
     border: 1px solid #dadada;  /* creates padding around scroll thumb */
 }
 
