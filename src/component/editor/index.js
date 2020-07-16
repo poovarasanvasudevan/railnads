@@ -97,6 +97,7 @@ const CommentEditor = memo((props) => {
                                             allowRule={true}
                                             allowTables={{
                                                 allowControls: true,
+                                                advanced: true
                                             }}
                                             allowHelpDialog={true}
                                             disabled={disabled}

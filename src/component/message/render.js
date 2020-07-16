@@ -2,15 +2,15 @@ import React from 'react';
 import {createPointerWithObjectId} from "../util";
 import {Action, ContextStore} from "../../core/context";
 import {TextMessage} from "./index";
-import { FiArrowDown as ScrollToBottomIcon} from 'react-icons/fi'
+import {FiArrowDown as ScrollToBottomIcon} from 'react-icons/fi';
 
 const UserMessage = ({id}) => {
     const {Parse, messages, dispatch} = React.useContext(ContextStore);
     var subscription = undefined;
-    const messagesEndRef = React.createRef()
+    const messagesEndRef = React.createRef();
     const scrollToBottom = () => {
         //messagesEndRef.current.scrollIntoView({behavior: 'smooth'})
-    }
+    };
     React.useEffect(() => {
         if (id) {
 
@@ -39,18 +39,20 @@ const UserMessage = ({id}) => {
                 var data = await query.find();
                 const reData = data.map(iData => ({
                     message: iData.get("text_message"),
+                    pinned: iData.get("pinned"),
                     userName: iData.get('from').get("username"),
                     createdAt: iData.get("createdAt"),
+                    userId: iData.get('from').id,
                     isEdited: iData.get("is_edited"),
                     firstName: iData.get('from').get("first_name"),
                     lastName: iData.get('from').get("last_name"),
-                    avatar: iData.get('from').get('avatar').url(),
+                    avatar: iData.get('from').get('avatar') ? iData.get('from').get('avatar').url() : null,
                     messageId: iData.id
                 }));
                 dispatch({type: Action.SET_MESSAGES, payload: reData});
                 // await applySubscription(query)
 
-                scrollToBottom()
+                scrollToBottom();
             };
 
             fetchMessage();
@@ -83,17 +85,20 @@ const UserMessage = ({id}) => {
         const applySubscription = async (query) => {
             subscription = await query.subscribe();
             subscription.on('create', (message) => {
+                console.log("message created");
                 dispatch({
-                    type: Action.SET_MESSAGES, payload: [...messages, {
+                    type: Action.SET_MESSAGES, payload: [{
                         message: message.get("text_message"),
+                        pinned: message.get("pinned"),
                         userName: message.get('from').get("username"),
+                        userId: message.get('from').id,
                         createdAt: message.get("createdAt"),
                         isEdited: message.get("is_edited"),
                         firstName: message.get('from').get("first_name"),
                         lastName: message.get('from').get("last_name"),
-                        avatar: message.get('from').get('avatar').url(),
+                        avatar: message.get('from').get('avatar') ? message.get('from').get('avatar').url() : null,
                         messageId: message.id
-                    }]
+                    },...messages]
                 });
                 // setMessages([...messages, {
                 //     message: message.get("text_message"),
@@ -115,7 +120,9 @@ const UserMessage = ({id}) => {
                         type: Action.SET_MESSAGES,
                         payload: [...messages.slice(0, index), {
                             message: message.get("text_message"),
+                            pinned: message.get("pinned"),
                             userName: message.get('from').get("username"),
+                            userId: message.get('from').id,
                             createdAt: message.get("createdAt"),
                             isEdited: message.get("is_edited"),
                             firstName: message.get('from').get("first_name"),
@@ -126,7 +133,7 @@ const UserMessage = ({id}) => {
                     });
 
                 } else {
-                    alert("not foung");
+                   // alert("not foung");
                 }
             });
         };
@@ -142,19 +149,19 @@ const UserMessage = ({id}) => {
 
     const Row = ({index, data}) => (
 
-        <div key={data.messageId}>
-            <TextMessage
-                // message={messages[index].get("text_message")}
-                // userName={messages[index].get('from').get("username")}
-                // createdAt={messages[index].get("createdAt")}
-                // isEdited={messages[index].get("is_edited")}
-                // firstName={messages[index].get('from').get("first_name")}
-                // lastName={messages[index].get('from').get("last_name")}
-                // avatar={messages[index].get('from').get('avatar').url()}
-                // messageId={messages[index].id}
-                {...data}
-            />
-        </div>
+
+        <TextMessage
+            // message={messages[index].get("text_message")}
+            // userName={messages[index].get('from').get("username")}
+            // createdAt={messages[index].get("createdAt")}
+            // isEdited={messages[index].get("is_edited")}
+            // firstName={messages[index].get('from').get("first_name")}
+            // lastName={messages[index].get('from').get("last_name")}
+            // avatar={messages[index].get('from').get('avatar').url()}
+            // messageId={messages[index].id}
+            {...data}
+        />
+
 
     );
 
@@ -178,7 +185,8 @@ const UserMessage = ({id}) => {
     //  {/*{messages && messages.length > 0 && messages.map((data, i) => <Row index={i} style={{}}/>)}*/}
     return (
         <>
-            {messages && messages.length > 0 && messages.map((data, i) => <Row index={i} data={data}/>)}
+            {messages && messages.length > 0 && messages.map((data, i) => <Row key={data.messageId} index={i}
+                                                                               data={data}/>)}
 
             {/*<div ref={messagesEndRef} className="right-0  p-3 shadow bg-white">*/}
             {/*    <ScrollToBottomIcon />*/}

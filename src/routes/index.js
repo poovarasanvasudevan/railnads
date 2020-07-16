@@ -12,11 +12,13 @@ const AccountSettings = React.lazy(() => import('../pages/account-settings'));
 
 export const routes = [
     {
+        id:"home",
         type: PrivateRoute,
         path: "/home/*",
         component: Dashboard,
     },
     {
+        id:"login",
         type: LoginRoute,
         path: "/",
         component: Login
@@ -45,7 +47,7 @@ export default function AppRoutes(props) {
         <Suspense fallback={<p>Loading</p>}>
             <Routes>
                 {routes.map((route, i) => (
-                   <route.type path={route.path} child={ <route.component />} />
+                   <route.type path={route.path} key={"route-" + route.id} child={ <route.component />} />
                 ))}
             </Routes>
         </Suspense>

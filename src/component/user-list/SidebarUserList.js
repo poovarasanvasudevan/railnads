@@ -5,9 +5,9 @@ const SidebarUserList = ({id,label,avatar}) => {
 
     return (
         <div key={id}
-             className=" px-2 py-1 mx-2 rounded-md flex flex-row content-center items-center">
+             className="px-2 py-1 mx-2 rounded-md flex flex-row items-center">
             <SquareIcon image={avatar} className=""/>
-            <h2 className="ml-3 hover:text-gray-900 font-medium text-gray-600"
+            <h2 className="ml-3 hover:text-gray-900 font-medium mt-0"
                 style={{fontSize: '14px'}}> {label}</h2>
         </div>
     )

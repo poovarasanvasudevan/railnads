@@ -1,25 +1,25 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import SidebarUserList from "./SidebarUserList";
 import {Action, ContextStore} from "../../core/context";
 import {avatarGenerate} from "../../core/props";
 import {FixedSizeList as List} from 'react-window';
-import AutoSizer from 'react-virtualized-auto-sizer'
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 const PinnedUsers = (props) => {
-    const {Parse, selectedUser, dispatch , users} = React.useContext(ContextStore)
+    const {Parse, selectedUser, dispatch, users} = React.useContext(ContextStore);
 
     React.useEffect(() => {
         const uQuery = new Parse.Query(Parse.User);
-        uQuery.notEqualTo("username", Parse.User.current().get("username"))
+        uQuery.notEqualTo("username", Parse.User.current().get("username"));
         //  uQuery.limit(30)
         uQuery.find()
             .then((data) => dispatch({type: Action.SET_USERS, payload: data}))
-            .catch((e) => console.log(e))
-    }, [])
+            .catch((e) => console.log(e));
+    }, []);
 
-    const onClick = (user) => {
+    const onClick = useCallback((user) => {
         if (selectedUser && selectedUser.data.id === user.id) {
-            console.log("old user selected")
+            console.log("old user selected");
         } else {
             dispatch({
                 type: Action.SELECT_USER,
@@ -32,21 +32,24 @@ const PinnedUsers = (props) => {
                         email: user.get("email")
                     }
                 }
-            })
+            });
         }
-    }
+    });
+
 
     const Row = ({index, style}) => (
-        <div
-            style={style}
-            className={`${(selectedUser && selectedUser.data.id === users[index].id) ? "bg-hovercolor" : ""} hover:bg-gray-100 cursor-pointer`}
-            onClick={() => onClick(users[index])}>
-            <SidebarUserList key={users[index].id}
-                             id={users[index].id}
-                             avatar={users[index].get("avatar") ? users[index].get("avatar").url() : avatarGenerate(users[index].get("username"))}
-                             label={users[index].get("first_name") + " " + users[index].get("last_name")}/>
-        </div>
-    )
+
+
+            <div
+                style={style}
+                className={`${(selectedUser && selectedUser.data.id === users[index].id) ? "bg-hovercolor" : ""} hover:bg-hovercolor cursor-pointer`}
+                onClick={() => onClick(users[index])}>
+                <SidebarUserList key={users[index].id}
+                                 id={users[index].id}
+                                 avatar={(users[index] && users[index].get("avatar")) ? users[index].get("avatar").url() : avatarGenerate(users[index].get("username"))}
+                                 label={users[index].get("first_name") + " " + users[index].get("last_name")}/>
+            </div>
+    );
 
     return (
         <AutoSizer>
@@ -63,7 +66,7 @@ const PinnedUsers = (props) => {
             )}
 
         </AutoSizer>
-    )
-}
+    );
+};
 
-export default React.memo(PinnedUsers)
+export default React.memo(PinnedUsers);

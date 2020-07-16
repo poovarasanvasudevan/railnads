@@ -1,6 +1,6 @@
 import React, {useCallback, memo} from 'react'
 import {GlobalItem, GlobalNav, modeGenerator, ThemeProvider} from "@atlaskit/navigation-next";
-import {FiHome, FiSearch, FiSettings, FiHelpCircle, FiGrid, FiUserPlus, FiBell} from 'react-icons/fi'
+import {FiHome, FiSearch, FiSettings, FiHelpCircle, FiGrid, FiUserPlus, FiBell,FiFolder} from 'react-icons/fi'
 import Avatar from "@atlaskit/avatar";
 import {colors} from '@atlaskit/theme';
 import {DropdownItemGroup, DropdownItem, DropdownMenuStateless} from "@atlaskit/dropdown-menu";
@@ -9,11 +9,13 @@ import {Action, ContextStore} from "../../core/context";
 import Drawer from '@atlaskit/drawer';
 import TextField from '@atlaskit/textfield';
 import {PersonResult, ResultItemGroup} from '@atlaskit/quick-search';
+import {AppColor} from "../util";
+import { RiAppsLine } from 'react-icons/ri'
 
 const customMode = modeGenerator({
     product: {
         text: colors.N0,
-        background: '#00548B',
+        background: AppColor,
     },
 });
 
@@ -116,15 +118,15 @@ const AppNavigation = memo((props) => {
                             onClick: () => dispatch({type: Action.SIDEBAR, open: true, context: "SEARCH"}),
                         },
                         {
-                            icon: FiUserPlus,
-                            id: 'create',
-                            tooltip: 'Create',
-                            onClick: () => dispatch({type: Action.SIDEBAR, open: true, context: "USERS"}),
+                            icon: RiAppsLine,
+                            id: 'Application',
+                            tooltip: 'Application',
+                            onClick: () => navigate("/home/apps"),
                         },
                         {
-                            icon: FiGrid,
-                            id: 'Apps',
-                            tooltip: 'Apps',
+                            icon: FiFolder,
+                            id: 'Files',
+                            tooltip: 'Files',
                             onClick: () => console.log('Create item clicked'),
                         },
                         {
@@ -165,7 +167,7 @@ const AppNavigation = memo((props) => {
                                 name={currentUser ? currentUser.get('first_name') + ' ' + currentUser.get('last_name') : 'User'}
                                 size="small"
                                 borderColor={'transparent'}
-                                src={currentUser ? currentUser.get('avatar').url() : null}
+                                src={(currentUser &&  currentUser.get('avatar'))  ? currentUser.get('avatar').url() : null}
                                 presence="online"/>,
                             id: 'accounts',
                             tooltip: 'Accounts',

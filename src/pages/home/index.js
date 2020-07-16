@@ -95,7 +95,7 @@ const Home = memo((props) => {
 
             {selectedUser && (
                 <div className="flex flex-col flex-1">
-                    <div className="flex bg-white shadow-sm px-2 py-3" style={{"max-height": "60px"}}>
+                    <div className="flex bg-white shadow px-2 py-3" style={{"maxHeight": "60px"}}>
                         <div className="flex-1">
                             <div className="flex flex-row">
                                 <SquareIcon
@@ -164,6 +164,8 @@ const Home = memo((props) => {
                             style={{width: '350px'}}
                             className="h-full border-l border-gray-200 p-2 content-center justify-center items-center sm:appearance-none">
 
+
+                            
                         </div>
                     </div>
 

@@ -1,10 +1,11 @@
 import React, {createContext, useReducer} from 'react';
 import Parse from 'parse';
 import {createPointerWithObjectId} from "../component/util";
+import {IntlProvider} from "react-intl";
 
 
 Parse.initialize("myAppId", "jskey");
-Parse.serverURL = 'http://localhost:1337/parse'
+Parse.serverURL = 'http://localhost:1337/parse';
 
 const Sidebar = {
     HELP: "help",
@@ -41,38 +42,38 @@ const StateProvider = React.memo((props) => {
             case Action.LOGIN : {
                 Parse.User.logIn(action.username, action.password)
                     .then((user) => action.callback(user, null))
-                    .catch((error) => action.callback(null, error))
-                return state
+                    .catch((error) => action.callback(null, error));
+                return state;
             }
 
             case Action.SELECT_USER : {
 
                 const currentUser = Parse.User.current();
-                const currentUserSetting = currentUser.get("settings")
-                currentUser.set("settings", {...currentUserSetting, lastUser: action.user.id})
+                const currentUserSetting = currentUser.get("settings");
+                currentUser.set("settings", {...currentUserSetting, lastUser: action.user.id});
                 currentUser.save()
                     .then((data) => console.log("Saved"))
-                    .catch((e) => console.log(e))
+                    .catch((e) => console.log(e));
 
                 return {
                     ...state,
                     selectedUser: action.user
-                }
+                };
             }
 
             case Action.LOGOUT: {
                 Parse.User.logOut()
                     .then(() => action.callback())
-                    .catch((error) => action.callback(error))
+                    .catch((error) => action.callback(error));
 
-                return state
+                return state;
             }
             case Action.SET_MESSAGES: {
-                return {...state, messages: action.payload}
+                return {...state, messages: action.payload};
             }
 
             case Action.SET_USERS: {
-                return {...state , users: action.payload}
+                return {...state, users: action.payload};
             }
 
             case Action.SIDEBAR : {
@@ -82,13 +83,13 @@ const StateProvider = React.memo((props) => {
                         open: action.open,
                         context: action.context
                     }
-                }
+                };
 
             }
 
             case Action.FETCH_MESSAGES : {
 
-                return state
+                return state;
             }
 
             case Action.SEND_MESSAGE: {
@@ -102,7 +103,7 @@ const StateProvider = React.memo((props) => {
                 // sendMessage.save()
                 //     .then((data) => console.log(data))
                 //     .catch((e) => console.log(e))
-                return state
+                return state;
             }
 
 
@@ -113,10 +114,12 @@ const StateProvider = React.memo((props) => {
 
 
     return (
-        <ContextStore.Provider value={{...state, dispatch: dispatch}}>
-            {props.children}
-        </ContextStore.Provider>
+        <IntlProvider locale='en'>
+            <ContextStore.Provider value={{...state, dispatch: dispatch}}>
+                {props.children}
+            </ContextStore.Provider>
+        </IntlProvider>
     );
 });
 
-export {ContextStore, StateProvider, Action}
+export {ContextStore, StateProvider, Action, Parse};

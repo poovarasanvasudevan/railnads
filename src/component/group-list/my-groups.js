@@ -22,9 +22,9 @@ const MyGroups = (props) => {
         <>
             {groups && groups.map((data) => (
                 <div
+                    key={data.get("group").id}
                     className={`hover:bg-gray-100 cursor-pointer`}>
-                    <SidebarUserList key={data.get("group").id}
-                                     id={data.get("group").id}
+                    <SidebarUserList id={data.get("group").id}
                                      avatar={data.get("group").get("avatar").url()}
                                      label={data.get("group").get("title")}/>
                 </div>

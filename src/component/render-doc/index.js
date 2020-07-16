@@ -28,6 +28,7 @@ const EditorRender = (props) => {
                 adfStage="stage0"
                 appearance={'full-width'}
             />
+
         </div>
     );
 }

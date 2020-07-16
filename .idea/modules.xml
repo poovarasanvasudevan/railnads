@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/railnads.iml" filepath="$PROJECT_DIR$/.idea/railnads.iml" />
       <module fileurl="file://$PROJECT_DIR$/../railnads-server/.idea/railnads-server.iml" filepath="$PROJECT_DIR$/../railnads-server/.idea/railnads-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../railnds-server/railnds-server.iml" filepath="$PROJECT_DIR$/../railnds-server/railnds-server.iml" />
     </modules>
   </component>
 </project>

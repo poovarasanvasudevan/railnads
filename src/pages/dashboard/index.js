@@ -5,19 +5,18 @@ import {
     Route,
 } from 'react-router-dom';
 import {SocketProvider} from "../../core/socketContext";
-import { RiWifiLine as NIcon } from 'react-icons/ri'
-
-const Home = React.lazy(() => import ("../home"))
-const AccountSettings = React.lazy(() => import ("../account-settings"))
-const ProfileSettings = React.lazy(() => import ("../profile-settings"))
-const Notification = React.lazy(() => import ("../notification"))
+const Home = React.lazy(() => import ("../home"));
+const AccountSettings = React.lazy(() => import ("../account-settings"));
+const ProfileSettings = React.lazy(() => import ("../profile-settings"));
+const Notification = React.lazy(() => import ("../notification"));
+const Applications = React.lazy(() => import ("../application"));
 
 export default function Dashboard(props) {
 
 
     React.useEffect(() => {
 
-    }, [])
+    }, []);
 
 
     return (
@@ -31,10 +30,11 @@ export default function Dashboard(props) {
                                element={<AccountSettings/>}/>
                         <Route key={"NotificationRoute"} path="/notification" element={<Notification/>}/>
                         <Route key={"ProfileSettingRoute"} path="/profile-settings" element={<ProfileSettings/>}/>
+                        <Route key={"ApplicationsPageRoute"} path="/apps" element={<Applications/>}/>
                     </Routes>
                 </Suspense>
             </SocketProvider>
 
         </Layout>
-    )
+    );
 }

@@ -50,3 +50,6 @@ export function randomFlatColors() {
 export function createPointerWithObjectId(className:string , objectId: string) {
     return  { "__type": "Pointer", "className": className, "objectId": objectId}
 }
+
+
+export const AppColor = "#00548B"
